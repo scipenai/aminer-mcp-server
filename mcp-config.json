@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "command": "npx",
+    "args": ["-y", "aminer-mcp"],
+    "env": {
+      "AMINER_API_KEY": "YOUR_AMINER_API_KEY"
+    }
+  }
+}
