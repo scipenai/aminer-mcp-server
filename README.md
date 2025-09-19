@@ -195,7 +195,6 @@ MIT 许可证
 
 ## 📞 支持
 
-如有问题和支持需求：
-1. 查看 [AMiner API 文档](https://www.aminer.cn/open/docs)
-2. 查阅 [模型上下文协议规范](https://modelcontextprotocol.io/docs/getting-started/intro)
-3. 访问项目 Issues 页面
+如有问题和支持需求, 请添加小助手的企业微信：
+
+<img src="qrcode.jpg" alt="企业微信二维码" width="200" />

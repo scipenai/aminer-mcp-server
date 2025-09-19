@@ -193,7 +193,6 @@ Issues and Pull Requests are welcome!
 
 ## 📞 Support
 
-For questions and support:
-1. Check [AMiner API documentation](https://www.aminer.cn/open/docs)
-2. Review [Model Context Protocol specification](https://modelcontextprotocol.io/docs/getting-started/intro)
-3. Visit project Issues page
+For questions and support, chat with us on WeChat:
+
+<img src="qrcode.jpg" alt="WeChat QR code" width="200" />
