@@ -1,27 +1,29 @@
-# AMiner MCP Server
+# AMiner MCP 服务器
 
-A Model Context Protocol (MCP) server providing powerful academic paper search and analysis functionality through the AMiner API.
+> **语言 / Language:** [🇨🇳 中文](README.md) | [🇺🇸 English](README.en.md)
 
-## 🌟 Features
+基于模型上下文协议（MCP）的服务器，通过 AMiner API 提供强大的学术论文搜索和分析功能。
 
-### 🔍 Search Tools
-- **Keyword Search** (`search_papers_by_keyword`) - Search papers by keywords
-- **Venue Search** (`search_papers_by_venue`) - Search papers from specific journals/venues
-- **Author Search** (`search_papers_by_author`) - Search papers by specific authors
-- **Advanced Search** (`search_papers_advanced`) - Multi-criteria combined search
+## 🌟 功能特性
 
-### 🤖 AI Assistant
-- **Paper Search Assistant** (`paper_search_assistant`) - AI prompt template for academic research assistance
+### 🔍 搜索工具
+- **关键词搜索** (`search_papers_by_keyword`) - 通过关键词搜索论文
+- **期刊搜索** (`search_papers_by_venue`) - 搜索特定期刊/会议的论文
+- **作者搜索** (`search_papers_by_author`) - 搜索特定作者的论文
+- **高级搜索** (`search_papers_advanced`) - 多条件组合搜索
 
-### ⚙️ Search Options
-- Pagination support (page, size)
-- Sorting options (by year or citation count)
-- Detailed paper information display
-- English interface with professional academic formatting
+### 🤖 AI 助手
+- **论文搜索助手** (`paper_search_assistant`) - 学术研究辅助的 AI 提示模板
 
-## 🚀 Quick Start
+### ⚙️ 搜索选项
+- 分页支持（页码、每页数量）
+- 排序选项（按年份或引用数）
+- 详细论文信息展示
+- 专业学术格式的英文界面
 
-### 1. Installation
+## 🚀 快速开始
+
+### 1. 安装
 
 ```bash
 git clone <repository-url>
@@ -29,143 +31,92 @@ cd aminer-mcp
 pnpm install
 ```
 
-### 2. Configuration
+### 2. 配置
 
-Copy the environment file and set your AMiner API Key:
+设置您的 AMiner API 密钥：
 
 ```bash
-cp .env.example .env
+export AMINER_API_KEY="your_aminer_api_key_here"
 ```
 
-Edit `.env` file:
-```bash
-AMINER_API_KEY=your_aminer_api_key_here
-```
-
-### 3. Build and Run
+### 3. 构建和运行
 
 ```bash
-# Build the project
+# 构建项目
 pnpm run build
 
-# Start the server (traditional way)
+# 启动服务器（传统方式）
 pnpm start
 
-# Start with npx (recommended)
-npx aminer-mcp
+# 使用 npx 启动（推荐）
+npx -y aminer-mcp-server
 
-# Or use the npm script
+# 或使用 npm 脚本
 pnpm run start:npx
 ```
 
-### 4. Development Mode
+### 4. 开发模式
 
 ```bash
 pnpm run dev
 ```
 
-### 5. NPX Usage (Recommended)
+### 5. NPX 使用方式（推荐）
 
-After building the project, you can use npx to start the server directly:
+构建项目后，您可以使用 npx 直接启动服务器：
 
 ```bash
-# Make sure the project is built first
+# 确保项目已构建
 pnpm run build
 
-# Start with npx (no need to install globally)
-npx aminer-mcp
+# 使用 npx 启动（无需全局安装）
+npx -y aminer-mcp-server
 
-# Or use it in MCP client configurations
-# The npx command will automatically use the local binary
+# 或在 MCP 客户端配置中使用
+# npx 命令会自动使用正确的包
 ```
 
-**Benefits of using npx:**
-- ✅ No need for global installation
-- ✅ Always uses the correct version
-- ✅ Cleaner command line interface
-- ✅ Better integration with MCP clients
+**使用 npx 的优势：**
+- ✅ 无需全局安装
+- ✅ 始终使用正确版本
+- ✅ 更清洁的命令行界面
+- ✅ 与 MCP 客户端更好集成
 
-## 🔧 MCP Client Configuration
+## 🔧 MCP 客户端配置
 
-### Claude Desktop Configuration
+添加到您的 MCP 客户端配置文件：
 
-Add to your Claude Desktop configuration file:
-
-#### Option 1: Using npx (Recommended)
 ```json
 {
   "mcpServers": {
     "aminer": {
       "command": "npx",
-      "args": ["aminer-mcp"],
-      "cwd": "/path/to/aminer-mcp",
+      "args": ["-y", "aminer-mcp-server"],
       "env": {
-        "AMINER_API_KEY": "your_aminer_api_key_here"
+        "npm_config_registry": "YOUR_NPM_REGISTRY", 
+        "AMINER_API_KEY": "YOUR_AMINER_API_KEY"
       }
     }
   }
 }
 ```
 
-#### Option 2: Traditional Node.js
-```json
-{
-  "mcpServers": {
-    "aminer": {
-      "command": "node",
-      "args": ["/path/to/aminer-mcp/dist/index.js"],
-      "env": {
-        "AMINER_API_KEY": "your_aminer_api_key_here"
-      }
-    }
-  }
-}
-```
-
-### Generic MCP Client Configuration
-
-#### Option 1: Using npx (Recommended)
-```json
-{
-  "name": "aminer-mcp-server",
-  "command": "npx",
-  "args": ["aminer-mcp"],
-  "cwd": "/path/to/aminer-mcp",
-  "env": {
-    "AMINER_API_KEY": "${AMINER_API_KEY}"
-  }
-}
-```
-
-#### Option 2: Traditional Node.js
-```json
-{
-  "name": "aminer-mcp-server",
-  "command": "node",
-  "args": ["dist/index.js"],
-  "cwd": "/path/to/aminer-mcp",
-  "env": {
-    "AMINER_API_KEY": "${AMINER_API_KEY}"
-  }
-}
-```
-
-## 📚 Tools Reference
+## 📚 工具参考
 
 ### search_papers_by_keyword
 
-Search academic papers by keyword.
+通过关键词搜索学术论文。
 
-**Parameters:**
-- `keyword` (string, required): Search keyword
-- `page` (number, optional): Page number, default 0
-- `size` (number, optional): Papers per page, default 10, max 10
-- `order` (string, optional): Sort order: 'year' or 'n_citation'
+**参数：**
+- `keyword` (字符串，必需): 搜索关键词
+- `page` (数字，可选): 页码，默认 0
+- `size` (数字，可选): 每页论文数，默认 10，最大 10
+- `order` (字符串，可选): 排序方式：'year' 或 'n_citation'
 
-**Example:**
+**示例：**
 ```json
 {
-  "keyword": "deep learning",
+  "keyword": "深度学习",
   "page": 0,
   "size": 5,
   "order": "n_citation"
@@ -174,15 +125,15 @@ Search academic papers by keyword.
 
 ### search_papers_by_venue
 
-Search papers published in a specific venue/journal.
+搜索特定期刊/会议发表的论文。
 
-**Parameters:**
-- `venue` (string, required): Venue/journal name
-- `page` (number, optional): Page number, default 0
-- `size` (number, optional): Papers per page, default 10, max 10
-- `order` (string, optional): Sort order: 'year' or 'n_citation'
+**参数：**
+- `venue` (字符串，必需): 期刊/会议名称
+- `page` (数字，可选): 页码，默认 0
+- `size` (数字，可选): 每页论文数，默认 10，最大 10
+- `order` (字符串，可选): 排序方式：'year' 或 'n_citation'
 
-**Example:**
+**示例：**
 ```json
 {
   "venue": "Nature",
@@ -194,15 +145,15 @@ Search papers published in a specific venue/journal.
 
 ### search_papers_by_author
 
-Search papers published by a specific author.
+搜索特定作者发表的论文。
 
-**Parameters:**
-- `author` (string, required): Author name
-- `page` (number, optional): Page number, default 0
-- `size` (number, optional): Papers per page, default 10, max 10
-- `order` (string, optional): Sort order: 'year' or 'n_citation'
+**参数：**
+- `author` (字符串，必需): 作者姓名
+- `page` (数字，可选): 页码，默认 0
+- `size` (数字，可选): 每页论文数，默认 10，最大 10
+- `order` (字符串，可选): 排序方式：'year' 或 'n_citation'
 
-**Example:**
+**示例：**
 ```json
 {
   "author": "Geoffrey Hinton",
@@ -213,22 +164,22 @@ Search papers published by a specific author.
 
 ### search_papers_advanced
 
-Advanced search supporting multiple criteria.
+支持多条件的高级搜索。
 
-**Parameters:**
-- `keyword` (string, optional): Search keyword
-- `venue` (string, optional): Venue/journal name
-- `author` (string, optional): Author name
-- `page` (number, optional): Page number, default 0
-- `size` (number, optional): Papers per page, default 10, max 10
-- `order` (string, optional): Sort order: 'year' or 'n_citation'
+**参数：**
+- `keyword` (字符串，可选): 搜索关键词
+- `venue` (字符串，可选): 期刊/会议名称
+- `author` (字符串，可选): 作者姓名
+- `page` (数字，可选): 页码，默认 0
+- `size` (数字，可选): 每页论文数，默认 10，最大 10
+- `order` (字符串，可选): 排序方式：'year' 或 'n_citation'
 
-**Note:** At least one of keyword, venue, or author must be provided.
+**注意：** 必须提供 keyword、venue 或 author 中的至少一个。
 
-**Example:**
+**示例：**
 ```json
 {
-  "keyword": "natural language processing",
+  "keyword": "自然语言处理",
   "author": "Yann LeCun",
   "page": 0,
   "size": 5,
@@ -236,123 +187,117 @@ Advanced search supporting multiple criteria.
 }
 ```
 
-## 🎯 Prompt Templates
+## 🎯 提示模板
 
 ### paper_search_assistant
 
-AI assistant prompt template for academic research.
+学术研究的 AI 助手提示模板。
 
-**Parameters:**
-- `research_topic` (string, required): Research topic or field
-- `search_focus` (string, optional): Search focus
-  - `recent`: Focus on latest papers
-  - `highly_cited`: Focus on highly cited papers
-  - `comprehensive`: Balanced search (default)
+**参数：**
+- `research_topic` (字符串，必需): 研究主题或领域
+- `search_focus` (字符串，可选): 搜索重点
+  - `recent`: 关注最新论文
+  - `highly_cited`: 关注高引用论文
+  - `comprehensive`: 平衡搜索（默认）
 
-**Example:**
+**示例：**
 ```json
 {
-  "research_topic": "attention mechanisms in computer vision",
+  "research_topic": "计算机视觉中的注意力机制",
   "search_focus": "highly_cited"
 }
 ```
 
-## 🛠️ Development
+## 🛠️ 开发
 
-### Project Structure
+### 项目结构
 
 ```
 src/
-├── index.ts          # Main server file
-├── aminer-client.ts  # AMiner API client
-└── types.ts          # Type definitions
+├── index.ts          # 主服务器文件
+├── aminer-client.ts  # AMiner API 客户端
+└── types.ts          # 类型定义
 ```
 
-### Available Scripts
+### 可用脚本
 
-- `pnpm run build` - Build the project
-- `pnpm run dev` - Development mode
-- `pnpm run lint` - Code linting
-- `pnpm test` - Run tests
-- `pnpm run setup` - Install and build
+- `pnpm run build` - 构建项目
+- `pnpm run dev` - 开发模式
+- `pnpm run lint` - 代码检查
+- `pnpm test` - 运行测试
+- `pnpm run setup` - 安装和构建
 
-### Technology Stack
+### 技术栈
 
-- **Runtime**: Node.js 18+
-- **Language**: TypeScript
-- **Framework**: Model Context Protocol SDK
-- **Package Manager**: pnpm
-- **API**: AMiner Open Platform API
-- **Protocol**: JSON-RPC 2.0 (MCP)
+- **运行时**: Node.js 18+
+- **语言**: TypeScript
+- **框架**: Model Context Protocol SDK
+- **包管理器**: pnpm
+- **API**: AMiner 开放平台 API
+- **协议**: JSON-RPC 2.0 (MCP)
 
-## 🔍 Error Handling
+## 🔍 错误处理
 
-The server handles various error conditions:
+服务器处理各种错误情况：
 
-- Missing or invalid API Key
-- Network connection issues
-- API rate limiting (40306)
-- Parameter validation errors
-- Server internal errors
+- 缺失或无效的 API 密钥
+- 网络连接问题
+- API 频率限制（40306）
+- 参数验证错误
+- 服务器内部错误
 
-All error messages are returned in English with clear descriptions.
+所有错误消息均以英文返回，并提供清晰的描述。
 
-## ❓ FAQ
+## ❓ 常见问题
 
-### How to get AMiner API Key?
-Visit the AMiner Open Platform console, register an account, and obtain your API Key.
+### 如何获取 AMiner API 密钥？
+访问 [AMiner 开放平台控制台](https://www.aminer.cn/)，注册账户并获取您的 API 密钥。
 
-### Why are search results empty?
-Check the following:
-1. API Key is correctly configured
-2. Network connection is stable
-3. Search keywords are appropriate
-4. API rate limits are not exceeded
+### 为什么搜索结果为空？
+请检查以下内容：
+1. API 密钥配置正确
+2. 网络连接稳定
+3. 搜索关键词合适
+4. 未超出 API 频率限制
 
-### How to debug the server?
-Use development mode:
+### 如何调试服务器？
+使用开发模式：
 ```bash
 pnpm run dev
 ```
 
-### What sorting options are supported?
-- `year`: Sort by publication year
-- `n_citation`: Sort by citation count
-- Default: Comprehensive sorting
+### 支持哪些排序选项？
+- `year`: 按发表年份排序
+- `n_citation`: 按引用数排序
+- 默认: 综合排序
 
-## 🚀 Performance Tips
+## 🚀 性能建议
 
-1. **Reasonable page size**: Recommend no more than 10 records per page
-2. **Use caching**: Consider client-side caching for popular queries
-3. **Error retry**: Implement exponential backoff retry mechanism
-4. **Monitor rate limits**: Pay attention to API call frequency limits
+1. **合理的页面大小**: 建议每页不超过 10 条记录
+2. **使用缓存**: 考虑对热门查询进行客户端缓存
+3. **错误重试**: 实现指数退避重试机制
+4. **监控频率限制**: 注意 API 调用频率限制
 
-## 🔮 Future Enhancements
+## 🔮 未来增强
 
-Potential features to consider:
-- Paper detail retrieval
-- Author information queries
-- Citation relationship analysis
-- Research trend analysis
-- Journal impact factor queries
+考虑的潜在功能：
+- 论文详情检索
+- 作者信息查询
+- 引用关系分析
+- 研究趋势分析
+- 期刊影响因子查询
 
-## 📄 License
+## 📄 许可证
 
-MIT License
+MIT 许可证
 
-## 🤝 Contributing
+## 🤝 贡献
 
-Issues and Pull Requests are welcome!
+欢迎提交 Issues 和 Pull Requests！
 
-## 📞 Support
+## 📞 支持
 
-For questions and support:
-1. Check AMiner API documentation
-2. Review Model Context Protocol specification
-3. Visit project Issues page
-
----
-
-**Status**: ✅ Production Ready  
-**Version**: 1.0.0  
-**Last Updated**: September 2025
+如有问题和支持需求：
+1. 查看 [AMiner API 文档](https://www.aminer.cn/open/docs)
+2. 查阅 [模型上下文协议规范](https://modelcontextprotocol.io/docs/getting-started/intro)
+3. 访问项目 Issues 页面

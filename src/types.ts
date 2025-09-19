@@ -52,7 +52,7 @@ export interface AminerSearchResponse {
   code: number;
   success: boolean;
   msg: string;
-  data: AminerPaper[];
+  data: AminerPaper[] | null; // data 可能为 null
   total: number;
   log_id: string;
 }
@@ -72,4 +72,56 @@ export interface SearchResult {
   page: number;
   size: number;
   hasMore: boolean;
+}
+
+/**
+ * Format paper information as JSON
+ */
+export interface Author {
+  name: string;
+  org: string | null;
+}
+
+export interface Venue {
+  name_zh: string | null;
+  name_en: string | null;
+  alias: string | null;
+}
+
+export interface Paper {
+  title: string;
+  authors: Author[];
+  venue: Venue | null;
+  year: number | null;
+  citations: number;
+  abstract: string | null;
+  doi: string | null;
+  url: string | null;
+  keywords: string[];
+  language: string | null;
+}
+
+export interface PaperWithIndex extends Paper {
+  index: number;
+}
+
+export interface SearchResultFormatted {
+  summary: {
+    total: number;
+    page: number;
+    size: number;
+    hasMore: boolean;
+    currentPageResults: number;
+  };
+  papers: PaperWithIndex[];
+  pagination: {
+    currentPage: number;
+    nextPage: number | null;
+    previousPage: number | null;
+  };
+}
+
+export interface ErrorResult {
+  error: string;
+  message: string;
 }

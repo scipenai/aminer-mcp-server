@@ -3,7 +3,16 @@
  */
 
 import fetch from 'node-fetch';
-import { AminerConfig, AminerSearchResponse, SearchParams, SearchResult } from './types.js';
+import { 
+  AminerConfig, 
+  AminerSearchResponse, 
+  SearchParams, 
+  SearchResult,
+  AminerPaper,
+  Paper,
+  SearchResultFormatted,
+  ErrorResult
+} from './types.js';
 
 export class AminerClient {
   private config: AminerConfig;
@@ -51,16 +60,30 @@ export class AminerClient {
 
       const data = await response.json() as AminerSearchResponse;
 
+      // Add detailed response data check
+      if (!data) {
+        throw new Error('API returned empty response');
+      }
+
       if (!data.success) {
         throw new Error(`API Error (${data.code}): ${data.msg}`);
       }
 
+      // Check the completeness of the response data
+      if (typeof data.total !== 'number') {
+        console.warn('API response missing or invalid total field, defaulting to 0');
+      }
+
+      // Ensure data.data is not null, if it is null, use an empty array
+      const papers = data.data || [];
+      const total = data.total || 0;
+
       return {
-        papers: data.data,
-        total: data.total,
+        papers,
+        total,
         page: params.page,
         size: params.size,
-        hasMore: (params.page + 1) * params.size < data.total,
+        hasMore: (params.page + 1) * params.size < total,
       };
     } catch (error) {
       if (error instanceof Error) {
@@ -92,44 +115,85 @@ export class AminerClient {
   }
 
   /**
-   * Format paper information as text
+   * Format paper information as JSON
    */
-  formatPaper(paper: any): string {
-    const title = paper.title_zh || paper.title || 'N/A';
-    const authors = paper.authors?.map((a: any) => a.name_zh || a.name).join(', ') || 'N/A';
-    const venue = paper.venue?.name_zh || paper.venue?.name_en || 'N/A';
-    const year = paper.year || 'N/A';
-    const citations = paper.n_citation || 0;
-    const abstract = paper.abstract_zh || paper.abstract || 'N/A';
-    const doi = paper.doi || 'N/A';
-    const url = paper.url || 'N/A';
+  formatPaper(paper: AminerPaper | null | undefined): Paper | ErrorResult {
+    // Add empty value check
+    if (!paper) {
+      return {
+        error: "Invalid Paper Data",
+        message: "No paper information available."
+      };
+    }
 
-    return `**${title}**
-Authors: ${authors}
-Venue: ${venue}
-Year: ${year}
-Citations: ${citations}
-Abstract: ${abstract}
-DOI: ${doi}
-URL: ${url}`;
+    const title = paper.title_zh || paper.title || 'N/A';
+    const authors = paper.authors && Array.isArray(paper.authors) 
+      ? paper.authors.map((author) => ({
+          name: author?.name_zh || author?.name || 'Unknown',
+          org: author?.org || null
+        }))
+      : [];
+    const venue = paper.venue ? {
+      name_zh: paper.venue.name_zh || null,
+      name_en: paper.venue.name_en || null,
+      alias: paper.venue.alias || null
+    } : null;
+    const year = paper.year || null;
+    const citations = paper.n_citation || 0;
+    const abstract = paper.abstract_zh || paper.abstract || null;
+    const doi = paper.doi || null;
+    const url = paper.url || null;
+    const keywords = paper.keywords_zh || paper.keywords || [];
+
+    return {
+      title,
+      authors,
+      venue,
+      year,
+      citations,
+      abstract,
+      doi,
+      url,
+      keywords,
+      language: paper.language || null
+    };
   }
 
   /**
-   * Format search results as text
+   * Format search results as JSON
    */
-  formatSearchResults(result: SearchResult): string {
+  formatSearchResults(result: SearchResult): SearchResultFormatted {
     const { papers, total, page, size, hasMore } = result;
     
-    let output = `Found ${total} papers, showing page ${page + 1} (${size} papers per page)\n\n`;
-    
-    papers.forEach((paper, index) => {
-      output += `${page * size + index + 1}. ${this.formatPaper(paper)}\n\n`;
-    });
+    // Ensure papers is not null or undefined
+    const formattedPapers = papers && Array.isArray(papers) 
+      ? papers.map((paper, index) => {
+          const formattedPaper = this.formatPaper(paper);
+          // Only process successfully formatted papers, skip error results
+          if ('error' in formattedPaper) {
+            return null;
+          }
+          return {
+            index: page * size + index + 1,
+            ...formattedPaper
+          };
+        }).filter((paper): paper is NonNullable<typeof paper> => paper !== null)
+      : [];
 
-    if (hasMore) {
-      output += `More results available, use page=${page + 1} to view next page`;
-    }
-
-    return output;
+    return {
+      summary: {
+        total,
+        page: page + 1,
+        size,
+        hasMore,
+        currentPageResults: formattedPapers.length
+      },
+      papers: formattedPapers,
+      pagination: {
+        currentPage: page + 1,
+        nextPage: hasMore ? page + 2 : null,
+        previousPage: page > 0 ? page : null
+      }
+    };
   }
 }

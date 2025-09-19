@@ -1,7 +1,7 @@
 {
   "name": "aminer-mcp-server",
-  "version": "1.0.0",
-  "description": "AMiner MCP Server - 论文期刊搜索服务",
+  "version": "0.1.0",
+  "description": "AMiner MCP Server - Academic Paper Search Service",
   "main": "dist/index.js",
   "type": "module",
   "bin": {
@@ -25,7 +25,7 @@
     "papers",
     "research"
   ],
-  "author": "Your Name",
+  "author": "Scipen AI",
   "license": "MIT",
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.18.0",

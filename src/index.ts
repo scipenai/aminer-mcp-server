@@ -52,14 +52,17 @@ server.registerTool(
       return {
         content: [{
           type: "text",
-          text: formattedResult
+          text: JSON.stringify(formattedResult, null, 2)
         }]
       };
     } catch (error) {
       return {
         content: [{
           type: "text",
-          text: `Search failed: ${error instanceof Error ? error.message : 'Unknown error'}`
+          text: JSON.stringify({
+            error: "Search failed",
+            message: error instanceof Error ? error.message : 'Unknown error'
+          }, null, 2)
         }],
         isError: true
       };
@@ -88,14 +91,17 @@ server.registerTool(
       return {
         content: [{
           type: "text",
-          text: formattedResult
+          text: JSON.stringify(formattedResult, null, 2)
         }]
       };
     } catch (error) {
       return {
         content: [{
           type: "text",
-          text: `Search failed: ${error instanceof Error ? error.message : 'Unknown error'}`
+          text: JSON.stringify({
+            error: "Search failed",
+            message: error instanceof Error ? error.message : 'Unknown error'
+          }, null, 2)
         }],
         isError: true
       };
@@ -124,14 +130,17 @@ server.registerTool(
       return {
         content: [{
           type: "text",
-          text: formattedResult
+          text: JSON.stringify(formattedResult, null, 2)
         }]
       };
     } catch (error) {
       return {
         content: [{
           type: "text",
-          text: `Search failed: ${error instanceof Error ? error.message : 'Unknown error'}`
+          text: JSON.stringify({
+            error: "Search failed",
+            message: error instanceof Error ? error.message : 'Unknown error'
+          }, null, 2)
         }],
         isError: true
       };
@@ -161,7 +170,10 @@ server.registerTool(
         return {
           content: [{
             type: "text",
-            text: "Error: At least one of keyword, venue, or author must be provided"
+            text: JSON.stringify({
+              error: "Validation Error",
+              message: "At least one of keyword, venue, or author must be provided"
+            }, null, 2)
           }],
           isError: true
         };
@@ -181,14 +193,17 @@ server.registerTool(
       return {
         content: [{
           type: "text",
-          text: formattedResult
+          text: JSON.stringify(formattedResult, null, 2)
         }]
       };
     } catch (error) {
       return {
         content: [{
           type: "text",
-          text: `Search failed: ${error instanceof Error ? error.message : 'Unknown error'}`
+          text: JSON.stringify({
+            error: "Search failed",
+            message: error instanceof Error ? error.message : 'Unknown error'
+          }, null, 2)
         }],
         isError: true
       };
