@@ -1,5 +1,5 @@
 {
-  "name": "aminer-mcp-server",
+  "name": "@scipen/aminer-mcp-server",
   "version": "0.1.0",
   "description": "AMiner MCP Server - Academic Paper Search Service",
   "main": "dist/index.js",
@@ -10,12 +10,9 @@
   "scripts": {
     "build": "tsc",
     "start": "node dist/index.js",
-    "start:npx": "npx aminer-mcp",
     "dev": "tsx src/index.ts",
     "lint": "eslint src --ext .ts",
-    "test": "node test-client.js",
-    "test:build": "pnpm run build && pnpm test",
-    "setup": "pnpm install && pnpm run build"
+    "test": "node test-client.js"
   },
   "keywords": [
     "mcp",
@@ -25,6 +22,10 @@
     "papers",
     "research"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/scipenai/aminer-mcp-server"
+  },
   "author": "Scipen AI",
   "license": "MIT",
   "dependencies": {

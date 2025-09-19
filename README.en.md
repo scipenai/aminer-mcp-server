@@ -21,67 +21,6 @@ A Model Context Protocol (MCP) server providing powerful academic paper search a
 - Detailed paper information display
 - English interface with professional academic formatting
 
-## 🚀 Quick Start
-
-### 1. Installation
-
-```bash
-git clone <repository-url>
-cd aminer-mcp
-pnpm install
-```
-
-### 2. Configuration
-
-Set your AMiner API Key:
-
-```bash
-export AMINER_API_KEY="your_aminer_api_key_here"
-```
-
-### 3. Build and Run
-
-```bash
-# Build the project
-pnpm run build
-
-# Start the server (traditional way)
-pnpm start
-
-# Start with npx (recommended)
-npx -y aminer-mcp-server
-
-# Or use the npm script
-pnpm run start:npx
-```
-
-### 4. Development Mode
-
-```bash
-pnpm run dev
-```
-
-### 5. NPX Usage (Recommended)
-
-After building the project, you can use npx to start the server directly:
-
-```bash
-# Make sure the project is built first
-pnpm run build
-
-# Start with npx (no need to install globally)
-npx -y aminer-mcp-server
-
-# Or use it in MCP client configurations
-# The npx command will automatically use the correct package
-```
-
-**Benefits of using npx:**
-- ✅ No need for global installation
-- ✅ Always uses the correct version
-- ✅ Cleaner command line interface
-- ✅ Better integration with MCP clients
-
 ## 🔧 MCP Client Configuration
 
 Add to your MCP client configuration file:
@@ -91,14 +30,22 @@ Add to your MCP client configuration file:
   "mcpServers": {
     "aminer": {
       "command": "npx",
-      "args": ["-y", "aminer-mcp-server"],
+      "args": ["-y", "@scipen/aminer-mcp-server"],
       "env": {
-        "npm_config_registry": "YOUR_NPM_REGISTRY", 
         "AMINER_API_KEY": "YOUR_AMINER_API_KEY"
       }
     }
   }
 }
+```
+
+## 🚀 Manual Run
+
+```bash
+# Set your AMiner API key:
+export AMINER_API_KEY="your_aminer_api_key_here"
+# Start with npx
+npx -y @scipen/aminer-mcp-server
 ```
 
 ## 📚 Tools Reference
@@ -222,10 +169,10 @@ src/
 ### Available Scripts
 
 - `pnpm run build` - Build the project
+- `pnpm run start` - Start the server
 - `pnpm run dev` - Development mode
 - `pnpm run lint` - Code linting
 - `pnpm test` - Run tests
-- `pnpm run setup` - Install and build
 
 ### Technology Stack
 
@@ -235,57 +182,6 @@ src/
 - **Package Manager**: pnpm
 - **API**: AMiner Open Platform API
 - **Protocol**: JSON-RPC 2.0 (MCP)
-
-## 🔍 Error Handling
-
-The server handles various error conditions:
-
-- Missing or invalid API Key
-- Network connection issues
-- API rate limiting (40306)
-- Parameter validation errors
-- Server internal errors
-
-All error messages are returned in English with clear descriptions.
-
-## ❓ FAQ
-
-### How to get AMiner API Key?
-Visit the [AMiner Open Platform console](https://www.aminer.cn/), register an account, and obtain your API Key.
-
-### Why are search results empty?
-Check the following:
-1. API Key is correctly configured
-2. Network connection is stable
-3. Search keywords are appropriate
-4. API rate limits are not exceeded
-
-### How to debug the server?
-Use development mode:
-```bash
-pnpm run dev
-```
-
-### What sorting options are supported?
-- `year`: Sort by publication year
-- `n_citation`: Sort by citation count
-- Default: Comprehensive sorting
-
-## 🚀 Performance Tips
-
-1. **Reasonable page size**: Recommend no more than 10 records per page
-2. **Use caching**: Consider client-side caching for popular queries
-3. **Error retry**: Implement exponential backoff retry mechanism
-4. **Monitor rate limits**: Pay attention to API call frequency limits
-
-## 🔮 Future Enhancements
-
-Potential features to consider:
-- Paper detail retrieval
-- Author information queries
-- Citation relationship analysis
-- Research trend analysis
-- Journal impact factor queries
 
 ## 📄 License
 

@@ -1,25 +1,25 @@
 #!/usr/bin/env node
 
 /**
- * AMiner MCP Server 测试客户端
- * 用于测试 MCP 服务器的功能
+ * AMiner MCP Server Test Client
+ * Used to test MCP server functionality
  */
 
 import { Client } from "@modelcontextprotocol/sdk/client/index.js";
 import { StdioClientTransport } from "@modelcontextprotocol/sdk/client/stdio.js";
 
 async function testAminerMcpServer() {
-  console.log("🚀 启动 AMiner MCP Server 测试...\n");
+  console.log("🚀 Starting AMiner MCP Server test...\n");
 
 
-  // 创建客户端
+  // Create client
   const client = new Client({
     name: "aminer-test-client",
     version: "1.0.0"
   });
 
   try {
-    // 连接到服务器
+    // Connect to server
     const transport = new StdioClientTransport({
       command: "node",
       args: ['dist/index.js'],
@@ -30,101 +30,101 @@ async function testAminerMcpServer() {
     });
     
     await client.connect(transport);
-    console.log("✅ 成功连接到 MCP 服务器\n");
+    console.log("✅ Successfully connected to MCP server\n");
 
-    // 测试 1: 列出可用工具
-    console.log("📋 测试 1: 列出可用工具");
+    // Test 1: List available tools
+    console.log("📋 Test 1: List available tools");
     const tools = await client.listTools();
-    console.log(`找到 ${tools.tools.length} 个工具:`);
+    console.log(`Found ${tools.tools.length} tools:`);
     tools.tools.forEach(tool => {
       console.log(`  - ${tool.name}: ${tool.description}`);
     });
     console.log();
 
-    // 测试 2: 列出可用提示
-    console.log("📋 测试 2: 列出可用提示");
+    // Test 2: List available prompts
+    console.log("📋 Test 2: List available prompts");
     const prompts = await client.listPrompts();
-    console.log(`找到 ${prompts.prompts.length} 个提示:`);
+    console.log(`Found ${prompts.prompts.length} prompts:`);
     prompts.prompts.forEach(prompt => {
       console.log(`  - ${prompt.name}: ${prompt.description}`);
     });
     console.log();
 
-    // 测试 3: 测试关键词搜索工具
-    console.log("🔍 测试 3: 关键词搜索工具");
+    // Test 3: Test keyword search tool
+    console.log("🔍 Test 3: Keyword search tool");
     try {
       const searchResult = await client.callTool({
         name: "search_papers_by_keyword",
         arguments: {
-          keyword: "人工智能",
+          keyword: "artificial intelligence",
           page: 0,
           size: 3,
           order: "n_citation"
         }
       });
       
-      console.log("搜索结果:");
+      console.log("Search results:");
       console.log(searchResult.content[0].text.substring(0, 500) + "...");
     } catch (error) {
-      console.log(`搜索测试失败 (预期，因为需要真实的API Key): ${error.message}`);
+      console.log(`Search test failed (expected, requires real API Key): ${error.message}`);
     }
     console.log();
 
-    // 测试 4: 测试提示模板
-    console.log("💡 测试 4: 论文搜索助手提示");
+    // Test 4: Test prompt template
+    console.log("💡 Test 4: Paper search assistant prompt");
     try {
       const promptResult = await client.getPrompt({
         name: "paper_search_assistant",
         arguments: {
-          research_topic: "机器学习",
+          research_topic: "machine learning",
           search_focus: "highly_cited"
         }
       });
       
-      console.log("提示模板生成成功:");
+      console.log("Prompt template generated successfully:");
       console.log(promptResult.messages[0].content.text.substring(0, 300) + "...");
     } catch (error) {
-      console.log(`提示测试失败: ${error.message}`);
+      console.log(`Prompt test failed: ${error.message}`);
     }
     console.log();
 
-    // 测试 5: 测试参数验证
-    console.log("⚠️  测试 5: 参数验证");
+    // Test 5: Test parameter validation
+    console.log("⚠️  Test 5: Parameter validation");
     try {
       await client.callTool({
         name: "search_papers_advanced",
         arguments: {
           page: 0,
           size: 5
-          // 故意不提供必需的搜索参数
+          // Intentionally omit required search parameters
         }
       });
     } catch (error) {
-      console.log("参数验证测试通过 - 正确捕获了参数错误");
+      console.log("Parameter validation test passed - correctly caught parameter error");
     }
 
-    console.log("\n✅ 所有测试完成!");
+    console.log("\n✅ All tests completed!");
 
   } catch (error) {
-    console.error("❌ 测试失败:", error.message);
+    console.error("❌ Test failed:", error.message);
   } finally {
-    // 清理
+    // Cleanup
     try {
       await client.close();
     } catch (error) {
-      console.error("清理时出错:", error.message);
+      console.error("Error during cleanup:", error.message);
     }
   }
 }
 
-// 检查环境
+// Check environment
 if (!process.env.AMINER_API_KEY) {
-  console.log("⚠️  警告: 未设置 AMINER_API_KEY 环境变量");
-  console.log("某些测试可能会失败，但基本功能测试仍会进行\n");
+  console.log("⚠️  Warning: AMINER_API_KEY environment variable not set");
+  console.log("Some tests may fail, but basic functionality tests will still proceed\n");
 }
 
-// 运行测试
+// Run tests
 testAminerMcpServer().catch(error => {
-  console.error("测试运行失败:", error);
+  console.error("Test execution failed:", error);
   process.exit(1);
 });
